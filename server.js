@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
-const PORT = 3000;
+// ❌ 기존 코드: const PORT = 3000;
+// 🟢 변경할 무적 코드:
+const PORT = process.env.PORT || 3000;
 
 
 
