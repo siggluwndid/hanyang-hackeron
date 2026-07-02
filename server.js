@@ -4,7 +4,7 @@ const app = express();
 
 
 app.get("/", (req,res) => {
-  `<!DOCTYPE html>
+  res.send(`<!DOCTYPE html>
     <html lang="ko">
     <head>
       <meta charset="UTF-8">
@@ -49,7 +49,7 @@ app.get("/", (req,res) => {
       </main>
     </body>
     </html>
-  `
+  `)
 })
 
 // 🚨 [미션 1]: 프론트엔드에서 보낸 JSON 데이터를 백엔드가 읽을 수 있게 변환해주는 
