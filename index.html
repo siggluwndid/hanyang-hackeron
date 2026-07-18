@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>키오스크</title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    >
+</head>
+
+<body>
+
+<main class="container">
+
+    <h1>디지털 정보 격차가 큰 노인들을 위한 키오스크 사이트</h1>
+
+    <button id="openLogin">
+        로그인
+    </button>
+
+</main>
+
+<dialog id="loginDialog">
+
+    <article>
+
+        <header>
+            <button
+                aria-label="Close"
+                rel="prev"
+                id="closeDialog">
+            </button>
+
+            <strong>로그인</strong>
+        </header>
+
+        <p>
+            로그인이 필요한 서비스입니다.
+        </p>
+
+        <footer>
+
+            <button class="secondary" id="cancel">
+                취소
+            </button>
+
+            <button id="loginBtn">
+                로그인 페이지 이동
+            </button>
+
+        </footer>
+
+    </article>
+
+</dialog>
+
+<script>
+
+const dialog = document.getElementById("loginDialog");
+
+document.getElementById("openLogin").onclick = () =>{
+    dialog.showModal();
+};
+
+document.getElementById("closeDialog").onclick = () =>{
+    dialog.close();
+};
+
+document.getElementById("cancelBtn").onclick = () =>{
+    dialog.close();
+};
+
+document.getElementById("loginBtn").onclick = () =>{
+    location.href = "login.html";
+};
+
+</script>
+
+</body>
+</html>
