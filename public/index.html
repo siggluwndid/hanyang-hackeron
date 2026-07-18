@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>키오스크 교육</title>
+
+    <!-- Pico CSS v2 최신 버전 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+</head>
+<body>
+
+<main class="container" style="max-width: 600px; padding-top: 2rem;">
+
+    <h1 style="font-size: 2rem; text-align: center; margin-bottom: 2rem;">
+        👵👴 어르신을 위한 키오스크 연습방
+    </h1>
+
+    <!-- 노인분들이 누르기 쉽게 버튼을 큼직하게 구성 -->
+    <button id="openLogin" style="font-size: 1.5rem; padding: 1.5rem;">
+        시작하기 (로그인)
+    </button>
+
+</main>
+
+<!-- 로그인 팝업 모달 -->
+<dialog id="loginDialog">
+    <article style="width: 100%; max-width: 500px;">
+        <header>
+            <button aria-label="Close" rel="prev" id="closeDialog"></button>
+            <strong style="font-size: 1.5rem;">로그인 확인</strong>
+        </header>
+
+        <p style="font-size: 1.2rem; margin: 1rem 0;">
+            연습을 시작하려면 로그인이 필요합니다.
+        </p>
+
+        <footer>
+            <button class="secondary" id="cancel" style="font-size: 1.1rem;">
+                취소
+            </button>
+            <button id="loginBtn" style="font-size: 1.1rem;">
+                로그인 하러가기
+            </button>
+        </footer>
+    </article>
+</dialog>
+
+<script>
+const dialog = document.getElementById("loginDialog");
+
+// 모달 열기/닫기 이벤트
+document.getElementById("openLogin").onclick = () => dialog.showModal();
+document.getElementById("closeDialog").onclick = () => dialog.close();
+document.getElementById("cancel").onclick = () => dialog.close();
+
+// 🚀 로그인 버튼 클릭 시 백엔드와 통신
+document.getElementById("loginBtn").onclick = async () => {
+    try {
+        // 1. 오타 수정 및 http 프로토콜, 포트 번호(:3000)를 명시합니다.
+        const response = await fetch("http://54.180.119.212:3000/login", {
+            method: "GET" // 상황에 따라 POST로 변경하고 body를 실어 보내도 됩니다.
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            alert("백엔드 연결 성공!");
+            dialog.close();
+            // 이후 페이지 이동 또는 다음 키오스크 단계 처리 진행
+        } else {
+            alert("로그인 요청에 실패했습니다.");
+        }
+    } catch (error) {
+        console.error("서버 통신 에러:", error);
+        alert("현재 백엔드 서버가 켜져 있지 않거나 주소가 잘못되었습니다.");
+    }
+};
+</script>
+
+</body>
+</html>
