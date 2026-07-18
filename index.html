@@ -2,330 +2,118 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>키오스크</title>
 
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
-    >
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
 </head>
 
 <body>
 
 <main class="container">
-    <h1>노인 키오스크 사이트</h1>
 
-    <button id="openLogin">
-        로그인
-    </button>
+    <h1> 노인 키오스크 사이트</h1>
 
-    <button
-        id="openSignup"
-        class="secondary"
-    >
+    <button id="openLogin">로그인</button>
+
+    <button id="openSignup" class="secondary">
         회원가입
     </button>
+
 </main>
 
 
-<!-- 로그인 창 -->
 <dialog id="loginDialog">
     <article>
+
         <header>
             <button
                 aria-label="Close"
                 rel="prev"
-                id="closeLogin"
-            ></button>
+                id="closeLogin">
+            </button>
 
             <strong>로그인</strong>
         </header>
 
-        <label for="loginUsername">
+        <label>
             아이디
-
-            <input
-                type="text"
-                id="loginUsername"
-                placeholder="아이디를 입력하세요"
-            >
+            <input type="text" placeholder="아이디를 입력하세요">
         </label>
 
-        <label for="loginPassword">
+        <label>
             비밀번호
-
-            <input
-                type="password"
-                id="loginPassword"
-                placeholder="비밀번호를 입력하세요"
-            >
+            <input type="password" placeholder="비밀번호를 입력하세요">
         </label>
 
-        <button id="loginBtn">
-            로그인
-        </button>
+        <button id="loginBtn">로그인</button>
 
-        <p id="loginMessage"></p>
     </article>
 </dialog>
 
-
-<!-- 회원가입 창 -->
 <dialog id="signupDialog">
     <article>
+
         <header>
             <button
                 aria-label="Close"
                 rel="prev"
-                id="closeSignup"
-            ></button>
+                id="closeSignup">
+            </button>
 
             <strong>회원가입</strong>
         </header>
 
-        <label for="signupName">
+        <label>
             이름
-
-            <input
-                type="text"
-                id="signupName"
-                placeholder="이름을 입력하세요"
-            >
+            <input type="text" placeholder="이름을 입력하세요">
         </label>
 
-        <label for="signupUsername">
+        <label>
             아이디
-
-            <input
-                type="text"
-                id="signupUsername"
-                placeholder="아이디를 입력하세요"
-            >
+            <input type="text" placeholder="아이디를 입력하세요">
         </label>
 
-        <label for="signupPassword">
+        <label>
             비밀번호
-
-            <input
-                type="password"
-                id="signupPassword"
-                placeholder="비밀번호를 입력하세요"
-            >
+            <input type="password" placeholder="비밀번호를 입력하세요">
         </label>
 
-        <button id="signupBtn">
-            가입하기
-        </button>
+        <button id="signupBtn">가입하기</button>
 
-        <p id="signupMessage"></p>
     </article>
 </dialog>
 
-
 <script>
-    const loginDialog =
-        document.getElementById("loginDialog");
+    const loginDialog = document.getElementById("loginDialog");
+    const signupDialog = document.getElementById("signupDialog");
 
-    const signupDialog =
-        document.getElementById("signupDialog");
-
-    const loginMessage =
-        document.getElementById("loginMessage");
-
-    const signupMessage =
-        document.getElementById("signupMessage");
-
-
-    // 로그인 창 열기
     document.getElementById("openLogin").onclick = () => {
-        loginMessage.textContent = "";
         loginDialog.showModal();
     };
 
-
-    // 로그인 창 닫기
     document.getElementById("closeLogin").onclick = () => {
         loginDialog.close();
     };
 
-
-    // 회원가입 창 열기
     document.getElementById("openSignup").onclick = () => {
-        signupMessage.textContent = "";
         signupDialog.showModal();
     };
 
-
-    // 회원가입 창 닫기
     document.getElementById("closeSignup").onclick = () => {
         signupDialog.close();
     };
 
-
-    // 회원가입
-    document.getElementById("signupBtn").onclick = async () => {
-        const name = document
-            .getElementById("signupName")
-            .value
-            .trim();
-
-        const username = document
-            .getElementById("signupUsername")
-            .value
-            .trim();
-
-        const password = document
-            .getElementById("signupPassword")
-            .value;
-
-        if (username === "") {
-            signupMessage.textContent =
-                "아이디를 입력해 주세요.";
-
-            return;
-        }
-
-        if (password === "") {
-            signupMessage.textContent =
-                "비밀번호를 입력해 주세요.";
-
-            return;
-        }
-
-        // 서버에 보낼 데이터
-        const signupData = {
-            username: username,
-            password: password,
-            name: name
-        };
-
-        try {
-            const response = await fetch(
-                "http://localhost:3000/signup",
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-
-                    body: JSON.stringify(signupData)
-                }
-            );
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                signupMessage.textContent =
-                    data.message ||
-                    "회원가입에 실패했습니다.";
-
-                return;
-            }
-
-            alert("회원가입이 완료되었습니다.");
-
-            console.log("서버 응답:", data);
-
-            document.getElementById(
-                "signupName"
-            ).value = "";
-
-            document.getElementById(
-                "signupUsername"
-            ).value = "";
-
-            document.getElementById(
-                "signupPassword"
-            ).value = "";
-
-            signupMessage.textContent = "";
-
-            signupDialog.close();
-
-        } catch (error) {
-            console.error("회원가입 오류:", error);
-
-            signupMessage.textContent =
-                "서버에 연결할 수 없습니다.";
-        }
+    document.getElementById("loginBtn").onclick = () => {
+        alert("로그인 버튼을 눌렀습니다.");
+        loginDialog.close();
     };
 
-
-    // 로그인
-    document.getElementById("loginBtn").onclick = async () => {
-        const username = document
-            .getElementById("loginUsername")
-            .value
-            .trim();
-
-        const password = document
-            .getElementById("loginPassword")
-            .value;
-
-        if (username === "") {
-            loginMessage.textContent =
-                "아이디를 입력해 주세요.";
-
-            return;
-        }
-
-        if (password === "") {
-            loginMessage.textContent =
-                "비밀번호를 입력해 주세요.";
-
-            return;
-        }
-
-        const loginData = {
-            username: username,
-            password: password
-        };
-
-        try {
-            const response = await fetch(
-                "http://localhost:3000/login",
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-
-                    body: JSON.stringify(loginData)
-                }
-            );
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                loginMessage.textContent =
-                    data.message ||
-                    "로그인에 실패했습니다.";
-
-                return;
-            }
-
-            alert("로그인되었습니다.");
-
-            console.log("로그인 응답:", data);
-
-            loginMessage.textContent = "";
-
-            loginDialog.close();
-
-        } catch (error) {
-            console.error("로그인 오류:", error);
-
-            loginMessage.textContent =
-                "서버에 연결할 수 없습니다.";
-        }
+    document.getElementById("signupBtn").onclick = () => {
+        alert("회원가입이 완료되었습니다.");
+        signupDialog.close();
     };
 </script>
 

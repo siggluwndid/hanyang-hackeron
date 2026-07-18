@@ -1,76 +1,106 @@
 <!DOCTYPE html>
-<html lang="ko" data-theme="light"><head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>로그인</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-  <style>
-    body {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #f4f6f9;
-    }
-    .container {
-      max-width: 400px;
-      width: 100%;
-    }
-  </style>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    >
 </head>
+
 <body>
-  <main class="container">
-    <article>
-      <header>
-        <hgroup>
-          <h1>로그인</h1>
-          <p>계정 정보를 입력해 주세요</p>
-        </hgroup>
-      </header>
-      <form>
-        <label for="email">이메일</label>
-        <input type="email" id="email" name="email" placeholder="email@example.com" required="" autocomplete="email">
+<main class="container" style="max-width:500px; margin-top:100px;">
 
-        <label for="password">비밀번호</label>
-        <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" required="" autocomplete="current-password">
+    <h2>로그인</h2>
 
-        <fieldset>
-          <label>
-            <input type="checkbox" id="remember" name="remember">
-            로그인 상태 유지
-          </label>
-        </fieldset>
+    <label>
+        아이디
+        <input
+            type="text"
+            id="username"
+            placeholder="아이디를 입력하세요"
+        >
+    </label>
 
-        <button type="submit">로그인</button>
-      </form>
-      <footer>
-        <p style="text-align:center; margin:0;">
-          계정이 없으신가요? <a href="#">회원가입</a>
-          &nbsp;|&nbsp;
-          <a href="#">비밀번호 찾기</a>
-        </p>
-      </footer>
-    </article>
+    <label>
+        비밀번호
+        <input
+            type="password"
+            id="password"
+            placeholder="비밀번호를 입력하세요"
+        >
+    </label>
 
-    <div style="text-align:center; margin-top:1rem;">
-      <a href="#" onclick="downloadCode(); return false;" role="button" class="outline secondary">소스코드 다운로드</a>
-    </div>
-  </main>
+    <button id="loginBtn">
+        로그인
+    </button>
 
-  <script>
-    function downloadCode() {
-      const html = document.documentElement.outerHTML;
-      const clean = '<!DOCTYPE html>\n' + html.replace(/<script src="\/__preview-bridge\.js"[^>]*><\/script>/, '');
-      const blob = new Blob([clean], { type: 'text/html' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'login.html';
-      a.click();
-      URL.revokeObjectURL(url);
+    <p id="message"></p>
+
+</main>
+
+<script>
+
+const loginBtn = document.getElementById("loginBtn");
+const message = document.getElementById("message");
+
+loginBtn.addEventListener("click", async () => {
+
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value;
+
+    if(username === ""){
+        message.textContent = "아이디를 입력해주세요.";
+        return;
     }
-  </script>
-  
 
+    if(password === ""){
+        message.textContent = "비밀번호를 입력해주세요.";
+        return;
+    }
 
-</body></html>
+    const body = {
+        username,
+        password
+    };
+
+    try{
+
+        const response = await fetch("http://localhost:3000/login",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(body)
+        });
+
+        const data = await response.json();
+
+        if(response.ok){
+            alert("로그인 성공!");
+
+            console.log(data);
+
+            // 메인 페이지 이동
+            // window.location.href = "/main.html";
+
+        }else{
+            message.textContent = data.message;
+        }
+
+    }catch(err){
+        console.error(err);
+        message.textContent = "서버와 연결할 수 없습니다.";
+    }
+
+});
+
+</script>
+
+</body>
+</html>
+
+만약 yejun 브랜치의 Express 서버를 사용한다면 API 경로가 /api/login인지 /users/login인지에 맞게 fetch() 주소만 바꾸면 됩니다. GitHub 저장소 구조에 맞춰 로그인 API(router)까지 연결해서 작성해드릴 수도 있습니다.
