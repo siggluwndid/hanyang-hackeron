@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>키오스크</title>
 
     <link rel="stylesheet"
@@ -13,69 +14,107 @@
 
 <main class="container">
 
-    <h1>디지털 정보 격차가 큰 노인들을 위한 키오스크 사이트</h1>
+    <h1> 노인 키오스크 사이트</h1>
 
-    <button id="openLogin">
-        로그인
+    <button id="openLogin">로그인</button>
+
+    <button id="openSignup" class="secondary">
+        회원가입
     </button>
 
 </main>
 
-<dialog id="loginDialog">
 
+<dialog id="loginDialog">
     <article>
 
         <header>
             <button
                 aria-label="Close"
                 rel="prev"
-                id="closeDialog">
+                id="closeLogin">
             </button>
 
             <strong>로그인</strong>
-
         </header>
 
-        <p>
-            로그인이 필요한 서비스입니다.
-        </p>
+        <label>
+            아이디
+            <input type="text" placeholder="아이디를 입력하세요">
+        </label>
 
-        <footer>
+        <label>
+            비밀번호
+            <input type="password" placeholder="비밀번호를 입력하세요">
+        </label>
 
-            <button class="secondary" id="cancel">
-                취소
-            </button>
-
-            <button id="loginBtn">
-                로그인 페이지 이동
-            </button>
-
-        </footer>
+        <button id="loginBtn">로그인</button>
 
     </article>
+</dialog>
 
+<dialog id="signupDialog">
+    <article>
+
+        <header>
+            <button
+                aria-label="Close"
+                rel="prev"
+                id="closeSignup">
+            </button>
+
+            <strong>회원가입</strong>
+        </header>
+
+        <label>
+            이름
+            <input type="text" placeholder="이름을 입력하세요">
+        </label>
+
+        <label>
+            아이디
+            <input type="text" placeholder="아이디를 입력하세요">
+        </label>
+
+        <label>
+            비밀번호
+            <input type="password" placeholder="비밀번호를 입력하세요">
+        </label>
+
+        <button id="signupBtn">가입하기</button>
+
+    </article>
 </dialog>
 
 <script>
+    const loginDialog = document.getElementById("loginDialog");
+    const signupDialog = document.getElementById("signupDialog");
 
-const dialog = document.getElementById("loginDialog");
+    document.getElementById("openLogin").onclick = () => {
+        loginDialog.showModal();
+    };
 
-document.getElementById("openLogin").onclick = () => {
-    dialog.showModal();
-};
+    document.getElementById("closeLogin").onclick = () => {
+        loginDialog.close();
+    };
 
-document.getElementById("closeDialog").onclick = () => {
-    dialog.close();
-};
+    document.getElementById("openSignup").onclick = () => {
+        signupDialog.showModal();
+    };
 
-document.getElementById("cancel").onclick = () => {
-    dialog.close();
-};
+    document.getElementById("closeSignup").onclick = () => {
+        signupDialog.close();
+    };
 
-document.getElementById("loginBtn").onclick = () => {
-    window.location.href = "login.html";
-};
+    document.getElementById("loginBtn").onclick = () => {
+        alert("로그인 버튼을 눌렀습니다.");
+        loginDialog.close();
+    };
 
+    document.getElementById("signupBtn").onclick = () => {
+        alert("회원가입이 완료되었습니다.");
+        signupDialog.close();
+    };
 </script>
 
 </body>
