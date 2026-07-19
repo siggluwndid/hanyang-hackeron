@@ -20,6 +20,9 @@
     <button id="startBtn" style="font-size: 1.5rem; padding: 1.5rem;">
         시작하기 (로그인)
     </button>
+    <button id="logout">
+        로그아웃
+    </button>
 
 </main>
 
@@ -49,6 +52,19 @@
 <script>
 const dialog = document.getElementById("loginDialog");
 const startBtn = document.getElementById("startBtn");
+
+function handleLogout() {
+    // 세션이나 로컬스토리지에 저장된 유저 데이터 싹 날리기
+    localStorage.clear(); 
+    sessionStorage.clear();
+
+    alert("로그아웃 되었습니다.");
+
+    // 다시 로그인 화면으로 강제 이동
+    window.location.href = "/index.html"; 
+}
+
+document.getElementById("logout").addEventListener("click", handleLogout);
 
 // 페이지 로드 시 로그인 상태에 따라 메인 버튼 문구 가꿔주기 (심사위원 가산점 포인트)
 window.onload = () => {
