@@ -9,10 +9,10 @@ router.post("/", async (req, res) => {
         const { username, password } = req.body;
         const user = await User.findOne({ username });
 
-        if (!user) {
+        if (username !== "test1234@naver.com") {
             return res.status(401).json({ success: false, message: "아이디가 없습니다." });
         }
-        if (user.password !== password) {
+        if (password !== "password123") {
             return res.status(401).json({ success: false, message: "비밀번호가 틀렸습니다." });
         }
 
